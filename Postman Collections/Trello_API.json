@@ -1,0 +1,482 @@
+{
+	"info": {
+		"_postman_id": "b92c1467-09bf-4397-bf67-ea519e33142d",
+		"name": "Trello APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5c8ebf91-9e67-4cb9-bdad-8a8449ab5dc2",
+						"exec": [
+							"// Save Response \r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"// Set collection variable with ID from response \r",
+							"pm.collectionVariables.set(\"Board_ID\", jsonData.id);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "e4e572a1-9cb9-42a3-9a73-fc9c2a1c3010",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{Trello_Base_URL}}/boards/?name=Board without Lists&key={{Trello_Key}}&token={{Token}}&defaultLists=false",
+					"host": [
+						"{{Trello_Base_URL}}"
+					],
+					"path": [
+						"boards",
+						""
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Board without Lists"
+						},
+						{
+							"key": "key",
+							"value": "{{Trello_Key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{Token}}"
+						},
+						{
+							"key": "defaultLists",
+							"value": "false"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Board",
+			"id": "1323975a-03b4-4223-9a7d-685e70feeacb",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Trello_Base_URL}}/boards/{{Board_ID}}?key={{Trello_Key}}&token={{Token}}",
+					"host": [
+						"{{Trello_Base_URL}}"
+					],
+					"path": [
+						"boards",
+						"{{Board_ID}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{Trello_Key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{Token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Board",
+			"id": "49102e65-a58f-4ae6-94f7-9d8f5c0ccd5f",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{Trello_Base_URL}}/boards/{{Board_ID}}?key={{Trello_Key}}&token={{Token}}&name=Updated",
+					"host": [
+						"{{Trello_Base_URL}}"
+					],
+					"path": [
+						"boards",
+						"{{Board_ID}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{Trello_Key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{Token}}"
+						},
+						{
+							"key": "name",
+							"value": "Updated",
+							"type": "text"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crate List",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6b2e4cd4-555a-4630-b08f-7331084d2b97",
+						"exec": [
+							"// Save Response \r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"// Set collection variable with ID from response \r",
+							"pm.collectionVariables.set(\"List_ID\", jsonData.id);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "b220d758-ac86-49a8-976a-11815a3fc2cf",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{Trello_Base_URL}}/lists?key={{Trello_Key}}&token={{Token}}&idBoard={{Board_ID}}&name=To Do API",
+					"host": [
+						"{{Trello_Base_URL}}"
+					],
+					"path": [
+						"lists"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{Trello_Key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{Token}}"
+						},
+						{
+							"key": "idBoard",
+							"value": "{{Board_ID}}"
+						},
+						{
+							"key": "name",
+							"value": "To Do API"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Card",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9329a8d9-6e53-47bd-b29c-88ca19968922",
+						"exec": [
+							"// Save Response \r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"// Set collection variable with ID from response \r",
+							"pm.collectionVariables.set(\"Card_ID\", jsonData.id);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "beab65e4-245d-41c2-9cec-116f67f0b38e",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{Trello_Base_URL}}/cards?key={{Trello_Key}}&token={{Token}}&idList={{List_ID}}&name=API Card&start=09/25/2023",
+					"host": [
+						"{{Trello_Base_URL}}"
+					],
+					"path": [
+						"cards"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{Trello_Key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{Token}}"
+						},
+						{
+							"key": "idList",
+							"value": "{{List_ID}}"
+						},
+						{
+							"key": "name",
+							"value": "API Card"
+						},
+						{
+							"key": "start",
+							"value": "09/25/2023"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Card",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9329a8d9-6e53-47bd-b29c-88ca19968922",
+						"exec": [
+							"// Save Response \r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"// Set collection variable with ID from response \r",
+							"pm.collectionVariables.set(\"Card_ID\", jsonData.id);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "b4c619da-7197-4096-a2b8-68ffd0c3bef2",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{Trello_Base_URL}}/cards/{{Card_ID}}?key={{Trello_Key}}&token={{Token}}&idList={{List_ID}}&name=API Card updated&start=10/25/2023",
+					"host": [
+						"{{Trello_Base_URL}}"
+					],
+					"path": [
+						"cards",
+						"{{Card_ID}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{Trello_Key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{Token}}"
+						},
+						{
+							"key": "idList",
+							"value": "{{List_ID}}"
+						},
+						{
+							"key": "name",
+							"value": "API Card updated"
+						},
+						{
+							"key": "start",
+							"value": "10/25/2023"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Card",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9329a8d9-6e53-47bd-b29c-88ca19968922",
+						"exec": [
+							"// Save Response \r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"// Set collection variable with ID from response \r",
+							"pm.collectionVariables.set(\"Card_ID\", jsonData.id);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "eb2975dd-2ef8-402a-96a0-e99f4deb98a6",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{Trello_Base_URL}}/cards/{{Card_ID}}?key={{Trello_Key}}&token={{Token}}",
+					"host": [
+						"{{Trello_Base_URL}}"
+					],
+					"path": [
+						"cards",
+						"{{Card_ID}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{Trello_Key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{Token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Close Board",
+			"id": "aba61d31-0692-41bb-be2f-722a72264689",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{Trello_Base_URL}}/boards/{{Board_ID}}?key={{Trello_Key}}&token={{Token}}&closed=true",
+					"host": [
+						"{{Trello_Base_URL}}"
+					],
+					"path": [
+						"boards",
+						"{{Board_ID}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{Trello_Key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{Token}}"
+						},
+						{
+							"key": "closed",
+							"value": "true",
+							"type": "text"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Board",
+			"id": "ec8767b1-45f1-465b-abde-e578470cb6d7",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{Trello_Base_URL}}/boards/{{Board_ID}}?key={{Trello_Key}}&token={{Token}}",
+					"host": [
+						"{{Trello_Base_URL}}"
+					],
+					"path": [
+						"boards",
+						"{{Board_ID}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{Trello_Key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{Token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "30e31c9e-d86c-4ec1-8f5e-1f285da6a11a",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "ed145e8e-83ee-4955-9dde-4214b9c9b850",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Trello_Base_URL",
+			"value": "https://api.trello.com/1",
+			"type": "string"
+		},
+		{
+			"key": "Trello_Key",
+			"value": "e430d533310332a6073a42f41c77f178",
+			"type": "string"
+		},
+		{
+			"key": "Token",
+			"value": "ATTA7f0a87a1091b400af7ae2355bfab9ee1e45cd31ebf8035e50e67ed1e870604dcFEF47B79",
+			"type": "string"
+		},
+		{
+			"key": "Board_ID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "List_ID",
+			"value": ""
+		},
+		{
+			"key": "Card_ID",
+			"value": ""
+		}
+	]
+}

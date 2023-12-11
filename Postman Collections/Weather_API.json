@@ -1,0 +1,509 @@
+{
+	"info": {
+		"_postman_id": "b72c84b3-834a-4ca7-8139-6c9c388a90a4",
+		"name": "Weather",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Current Weather",
+			"id": "e71f52d6-ee2e-447a-bba3-254d2bcb836b",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_URL}}/current.json?key={{API_KEY}}&q=bulk",
+					"host": [
+						"{{Base_URL}}"
+					],
+					"path": [
+						"current.json"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{API_KEY}}"
+						},
+						{
+							"key": "q",
+							"value": "bulk"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Current Weather Lang",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "442f6676-7a28-43f3-bf65-161f7918e8c9",
+						"exec": [
+							"// Get the response body\r",
+							"var responseBody = pm.response.json();\r",
+							"\r",
+							"// Check if the response contains information for Cairo\r",
+							"if (responseBody && responseBody.location && responseBody.location.name === 'Cairo') {\r",
+							"    pm.test(\"Response is for Cairo\", function () {\r",
+							"        pm.expect(responseBody.location.name).to.eql(\"Cairo\");\r",
+							"    });\r",
+							"} else {\r",
+							"    pm.test(\"Response is not for Cairo\", function () {\r",
+							"        pm.expect.fail(\"The response does not seem to be for Cairo\");\r",
+							"    });\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "a9ab64f9-7252-4795-aa22-9b7498bc154f",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_URL}}/current.json?key={{API_KEY}}&q=Cairo&lang=ar",
+					"host": [
+						"{{Base_URL}}"
+					],
+					"path": [
+						"current.json"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{API_KEY}}"
+						},
+						{
+							"key": "q",
+							"value": "Cairo"
+						},
+						{
+							"key": "lang",
+							"value": "ar"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Forecast",
+			"id": "243ccbc6-2b31-4775-a6c8-d3ed11ad78c9",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_URL}}/forecast.json?key={{API_KEY}}&q=Aswan&days=14",
+					"host": [
+						"{{Base_URL}}"
+					],
+					"path": [
+						"forecast.json"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{API_KEY}}"
+						},
+						{
+							"key": "q",
+							"value": "Aswan"
+						},
+						{
+							"key": "days",
+							"value": "14"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Forecast aqi",
+			"id": "9a20e61b-1319-48b4-b23f-ee6480ac433c",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_URL}}/forecast.json?key={{API_KEY}}&q=Aswan&days=1&lang=ar&aqi=yes",
+					"host": [
+						"{{Base_URL}}"
+					],
+					"path": [
+						"forecast.json"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{API_KEY}}"
+						},
+						{
+							"key": "q",
+							"value": "Aswan"
+						},
+						{
+							"key": "days",
+							"value": "1"
+						},
+						{
+							"key": "lang",
+							"value": "ar"
+						},
+						{
+							"key": "aqi",
+							"value": "yes"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Forecast alerts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "97b4d280-a531-4772-8172-d758e58d766a",
+						"exec": [
+							"// Get the response body\r",
+							"var responseBody = pm.response.json();\r",
+							"// Get the forecast days\r",
+							"var forecastDays = responseBody.forecast.forecastday;\r",
+							"// Get the value of the 'days' query parameter from the URL\r",
+							"let numberOfDays = pm.request.url.query.get('days');\r",
+							"\r",
+							"if (!numberOfDays) {\r",
+							"// Check if the number of forecast days is exactly match with query request\r",
+							"pm.test(\"Forecast for requested count of days\", function () {\r",
+							"    pm.expect(forecastDays.length).to.eql(1);\r",
+							"});\r",
+							"}else{\r",
+							"    pm.test(\"Forecast for requested count of days\", function () {\r",
+							"    pm.expect(forecastDays.length).to.eql(parseInt(pm.request.url.query.get('days')));\r",
+							"    });\r",
+							"}\r",
+							"\r",
+							"// Check if the 'days' parameter exists in the URL\r",
+							"if (!numberOfDays) {\r",
+							"    pm.test(\"Query parameter 'days' missing\", function () {\r",
+							"        pm.expect.fail(\"Query parameter 'days' is required but missing in the URL\");\r",
+							"    });\r",
+							"} else {\r",
+							"    // Calculate dates based on the number of days required\r",
+							"    let today = new Date();\r",
+							"    let dates = [];\r",
+							"    for (let i = 0; i < numberOfDays; i++) {\r",
+							"        let date = new Date(today);\r",
+							"        date.setDate(date.getDate() + i);\r",
+							"        dates.push(date.toISOString().split('T')[0]);\r",
+							"    }\r",
+							"\r",
+							"    // Check if the dates in the forecast match the next two consecutive days\r",
+							"    pm.test(\"Forecast dates are consecutive\", function () {\r",
+							"        for (let i = 0; i < numberOfDays; i++) {\r",
+							"            pm.expect(forecastDays[i].date).to.eql(dates[i]);\r",
+							"        }\r",
+							"    });\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "61341d30-4fd7-404a-aa8c-c57cd33452a5",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_URL}}/forecast.json?key={{API_KEY}}&q=Italy&lang=ar&alerts=no",
+					"host": [
+						"{{Base_URL}}"
+					],
+					"path": [
+						"forecast.json"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{API_KEY}}"
+						},
+						{
+							"key": "q",
+							"value": "Italy"
+						},
+						{
+							"key": "days",
+							"value": "2",
+							"disabled": true
+						},
+						{
+							"key": "lang",
+							"value": "ar"
+						},
+						{
+							"key": "alerts",
+							"value": "no"
+						},
+						{
+							"key": "hour",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Forecast alerts Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "97b4d280-a531-4772-8172-d758e58d766a",
+						"exec": [
+							"// Get the response body\r",
+							"var responseBody = pm.response.json();\r",
+							"// Get the forecast days\r",
+							"var forecastDays = responseBody.forecast.forecastday;\r",
+							"// Get the value of the 'days' query parameter from the URL\r",
+							"let numberOfDays = pm.request.url.query.get('days');\r",
+							"\r",
+							"if (!numberOfDays) {\r",
+							"// Check if the number of forecast days is exactly match with query request\r",
+							"pm.test(`Forecast for count of  ${numberOfDays} days`, function () {\r",
+							"    pm.expect(forecastDays.length).to.eql(1);\r",
+							"});\r",
+							"}else{\r",
+							"    pm.test(`Forecast for count of  ${numberOfDays} days`, function () {\r",
+							"    pm.expect(forecastDays.length).to.eql(parseInt(pm.request.url.query.get('days')));\r",
+							"    });\r",
+							"}\r",
+							"\r",
+							"// Check if the 'days' parameter exists in the URL\r",
+							"if (!numberOfDays) {\r",
+							"    pm.test(\"Query parameter 'days' missing\", function () {\r",
+							"        pm.expect.fail(\"Query parameter 'days' is required but missing in the URL\");\r",
+							"    });\r",
+							"} else {\r",
+							"    // Calculate dates based on the number of days required\r",
+							"    let today = new Date();\r",
+							"    let dates = [];\r",
+							"    for (let i = 0; i < numberOfDays; i++) {\r",
+							"        let date = new Date(today);\r",
+							"        date.setDate(date.getDate() + i);\r",
+							"        dates.push(date.toISOString().split('T')[0]);\r",
+							"    }\r",
+							"\r",
+							"    // Check if the dates in the forecast match the next two consecutive days\r",
+							"    pm.test(\"Forecast dates are consecutive\", function () {\r",
+							"        for (let i = 0; i < numberOfDays; i++) {\r",
+							"            pm.expect(forecastDays[i].date).to.eql(dates[i]);\r",
+							"        }\r",
+							"    });\r",
+							"}\r",
+							"\r",
+							"// Get the query parameter 'hour' sent with the request\r",
+							"let requestedHour = pm.request.url.query.get('hour');\r",
+							"\r",
+							"// Check if the 'hour' parameter exists in the request\r",
+							"if (requestedHour) {\r",
+							"    // Check if the response contains data only for the requested hour\r",
+							"    pm.test(`Response contains data for hour ${requestedHour}`, function () {\r",
+							"        let hasRequestedHour = responseBody.forecast.forecastday[0].hour.some(hourData => {\r",
+							"            const responseHour = hourData.time.split(' ')[1].split(':')[0];\r",
+							"            return responseHour === String(requestedHour).padStart(2, '0');\r",
+							"        });\r",
+							"        pm.expect(hasRequestedHour).to.be.true;\r",
+							"    });\r",
+							"} else {\r",
+							"    // If 'hour' parameter is not sent, create a test to inform\r",
+							"    pm.test(\"No 'hour' parameter sent\", function () {\r",
+							"        pm.expect.fail(\"The 'hour' parameter was not sent with the request\");\r",
+							"    });\r",
+							"}\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "1079e4d9-50dc-4c8a-9fe3-9c7befa8bb0a",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_URL}}/forecast.json?key={{API_KEY}}&q=Italy&days=2&lang=ar&alerts=no&hour=16",
+					"host": [
+						"{{Base_URL}}"
+					],
+					"path": [
+						"forecast.json"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{API_KEY}}"
+						},
+						{
+							"key": "q",
+							"value": "Italy"
+						},
+						{
+							"key": "days",
+							"value": "2"
+						},
+						{
+							"key": "lang",
+							"value": "ar"
+						},
+						{
+							"key": "alerts",
+							"value": "no"
+						},
+						{
+							"key": "hour",
+							"value": "16"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Forecast Task",
+			"id": "1c4c8cb2-daa8-4ad1-8898-7a9f163c7f3f",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_URL}}/forecast.json?key={{API_KEY}}&q=Italy&lang=ar&dt=2023-09-21",
+					"host": [
+						"{{Base_URL}}"
+					],
+					"path": [
+						"forecast.json"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{API_KEY}}"
+						},
+						{
+							"key": "q",
+							"value": "Italy"
+						},
+						{
+							"key": "lang",
+							"value": "ar"
+						},
+						{
+							"key": "dt",
+							"value": "2023-09-21"
+						},
+						{
+							"key": "hour",
+							"value": "18",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search",
+			"id": "edfbeb5c-09ce-468a-82de-ffe3ddd86150",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_URL}}/search.json ?key={{API_KEY}}&q=Alexandria",
+					"host": [
+						"{{Base_URL}}"
+					],
+					"path": [
+						"search.json "
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{API_KEY}}",
+							"type": "text"
+						},
+						{
+							"key": "q",
+							"value": "Alexandria",
+							"type": "text"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "832ac69b-d258-4c49-a5b1-af505dfe00ba",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "c77df0ec-ca7b-4b23-84b2-3a66e5334eb9",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "API_KEY",
+			"value": "ef64601512b44626956153441231809",
+			"type": "string"
+		},
+		{
+			"key": "Base_URL",
+			"value": "http://api.weatherapi.com/v1",
+			"type": "string"
+		}
+	]
+}
